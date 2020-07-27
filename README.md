@@ -4,6 +4,44 @@ Node.js server to convert DASH video stream manifests to HLS
 
 - - - -
 
+### Summary of Behavior
+
+* runs an HTTP(S) server
+* each inbound request includes:
+  - required in URL path:
+    * base64 encoded URL for a DASH manifest
+  - optional in querystring parameters:
+    * `&dump=1`
+      - outputs a dump of JSON data
+        * which is mainly useful for me during development
+    * `&VOD=1`
+      - HLS master manifest forwards this querystring parameter in URLs for all HLS child manifests
+      - HLS child manifests include:
+        * prefix: `#EXT-X-PLAYLIST-TYPE:VOD`
+        * suffix: `#EXT-X-ENDLIST`
+      - this overrides the default behavior, which is to determine _VOD_ when the DASH manifest does not include: [`minimumUpdatePeriod`](https://dashif.org/docs/DASH-IF-IOP-v4.2-clean.htm#_Ref262468202)
+    * `&playlist=bandwidth`
+      - outputs an HLS child manifest for the given playlist (as identified by its integer bandwidth)
+      - media group: VIDEO
+    * `&group_type=(AUDIO|SUBTITLES)&group_id=id&group_lang=lang&group_index=0`
+      - outputs an HLS child manifest for the given media group
+      - media group: AUDIO|SUBTITLES
+    * _[default]_
+      - outputs the HSL master manifest
+      - includes URLs to access all HLS child manifests
+* when each inbound request is received:
+  - the base64 encoded DASH manifest URL is used as a key to lookup whether a parsed data structure representing the DASH manifest is temporarily held in a cache
+    * if not, then:
+      - download the DASH manifest
+        * several command-line options are available to configure HTTP requests made to external servers
+      - parse its contents (using [mpd-parser](https://github.com/videojs/mpd-parser) library)
+      - add the parsed DASH data structure to the cache
+      - continue..
+  - the querystring parameters are used to determine which HLS manifest to output
+    * the parsed DASH data structure is used to produce this result
+
+- - - -
+
 ### Installation and Usage: Globally
 
 #### How to: Install:
