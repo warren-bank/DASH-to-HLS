@@ -1,0 +1,30 @@
+{
+  "name": "@warren-bank/dash-to-hls",
+  "description": "Node.js server to convert DASH video stream manifests to HLS",
+  "version": "0.1.0",
+  "scripts": {
+    "start":      "node dash-to-hls/bin/dash-to-hls.js",
+    "sudo":  "sudo node dash-to-hls/bin/dash-to-hls.js"
+  },
+  "bin": {
+    "dash-to-hls": "dash-to-hls/bin/dash-to-hls.js"
+  },
+  "dependencies": {
+    "@warren-bank/node-request": "^1.0.4",
+    "mpd-parser": "^0.10.1"
+  },
+  "license": "GPL-2.0",
+  "author": {
+    "name": "Warren R. Bank",
+    "email": "warren.r.bank@gmail.com",
+    "url": "https://github.com/warren-bank"
+  },
+  "homepage": "https://github.com/warren-bank/DASH-to-HLS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warren-bank/DASH-to-HLS"
+  },
+  "bugs": {
+    "url": "https://github.com/warren-bank/DASH-to-HLS/issues"
+  }
+}
