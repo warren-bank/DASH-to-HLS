@@ -19,7 +19,7 @@ Node.js server to convert DASH video stream manifests to HLS
       - HLS child manifests include:
         * prefix: `#EXT-X-PLAYLIST-TYPE:VOD`
         * suffix: `#EXT-X-ENDLIST`
-      - this overrides the default behavior, which is to determine _VOD_ when the DASH manifest does not include: [`minimumUpdatePeriod`](https://dashif.org/docs/DASH-IF-IOP-v4.2-clean.htm#_Ref262468202)
+      - this overrides the default behavior, which is to determine _VOD_ when the DASH manifest does not include: [`MPD@type="dynamic"`](https://dashif.org/docs/DASH-IF-IOP-v4.2-clean.htm#_Toc416131461)
     * `&playlist=bandwidth`
       - outputs an HLS child manifest for the given playlist (as identified by its integer bandwidth)
       - media group: VIDEO

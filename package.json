@@ -1,7 +1,7 @@
 {
   "name": "@warren-bank/dash-to-hls",
   "description": "Node.js server to convert DASH video stream manifests to HLS",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "start":      "node dash-to-hls/bin/dash-to-hls.js",
     "sudo":  "sudo node dash-to-hls/bin/dash-to-hls.js"

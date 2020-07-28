@@ -39,7 +39,7 @@ const get_hls_master_manifest = function(parsed_dash_manifest, server_url, VOD) 
 
               inner_group_attributes = [...group_attributes]
               inner_group_attributes.push(`NAME="${(inner_group_playlist && inner_group_playlist.attributes && inner_group_playlist.attributes.NAME) || group_data.language || group_lang || ''}"`)
-              inner_group_attributes.push(`URI="${server_url}?group_type=${group_type}&group_id=${group_id}&group_lang=${group_lang}&group_index=${group_index}${VOD ? '&VOD=1' : ''}"`)
+              inner_group_attributes.push(`URI="${server_url}?group_type=${encodeURIComponent(group_type)}&group_id=${encodeURIComponent(group_id)}&group_lang=${encodeURIComponent(group_lang)}&group_index=${encodeURIComponent(group_index)}${VOD ? '&VOD=1' : ''}"`)
 
               m3u8.push(inner_group_attributes.join(','))
             }
@@ -75,7 +75,7 @@ const get_hls_master_manifest = function(parsed_dash_manifest, server_url, VOD) 
             stream_attributes.push(`SUBTITLES="${data.attributes.SUBTITLES}"`)
 
           m3u8.push(stream_attributes.join(','))
-          m3u8.push(`${server_url}?playlist=${data.attributes.BANDWIDTH}${VOD ? '&VOD=1' : ''}`)
+          m3u8.push(`${server_url}?playlist=${encodeURIComponent(data.attributes.BANDWIDTH)}${VOD ? '&VOD=1' : ''}`)
         }
       }
     }
@@ -86,8 +86,8 @@ const get_hls_master_manifest = function(parsed_dash_manifest, server_url, VOD) 
 
 // -----------------------------------------------------------------------------
 
-const is_VOD = function(parsed_dash_manifest, dash_qs) {
-  return dash_qs.VOD || (typeof parsed_dash_manifest.minimumUpdatePeriod !== 'number')
+const is_VOD = function(playlist, dash_qs) {
+  return playlist.endList || dash_qs.VOD
 }
 
 const get_resolved_url = function(relpath, baseurl) {
@@ -95,8 +95,8 @@ const get_resolved_url = function(relpath, baseurl) {
   return url.href
 }
 
-const get_hls_child_manifest = function(parsed_dash_manifest, dash_url, dash_qs, playlist) {
-  const VOD = is_VOD(parsed_dash_manifest, dash_qs)
+const get_hls_child_manifest = function(playlist, dash_url, dash_qs) {
+  const VOD = is_VOD(playlist, dash_qs)
 
   const m3u8 = []
   m3u8.push('#EXTM3U')
@@ -166,7 +166,7 @@ const get_hls_child_manifest_video = function(parsed_dash_manifest, dash_url, da
   if (!playlist)
     throw new Error('could not resolve video playlist')
 
-  return get_hls_child_manifest(parsed_dash_manifest, dash_url, dash_qs, playlist)
+  return get_hls_child_manifest(playlist, dash_url, dash_qs)
 }
 
 // -----------------------------------------------------------------------------
@@ -228,7 +228,7 @@ const get_hls_child_manifest_group = function(parsed_dash_manifest, dash_url, da
   if (!playlist)
     throw new Error(`could not resolve: "${group_type}/${group_id}/${group_lang}/${group_index}"`)
 
-  return get_hls_child_manifest(parsed_dash_manifest, dash_url, dash_qs, playlist)
+  return get_hls_child_manifest(playlist, dash_url, dash_qs)
 }
 
 // -----------------------------------------------------------------------------
