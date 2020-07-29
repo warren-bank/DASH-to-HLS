@@ -112,7 +112,14 @@ const dash_to_hls = function({server, host, port, is_secure, req_headers, req_op
 
     let parsed_dash_manifest = dash_cache.get_manifest(dash_url_base64)
     if (parsed_dash_manifest) {
-      callback(parsed_dash_manifest)
+      try {
+        callback(parsed_dash_manifest)
+      }
+      catch(e) {
+        debug(0, 'ERROR:', e.message)
+        res.writeHead(500)
+        res.end()
+      }
     }
     else {
       const options = get_request_options(dash_url)

@@ -3,6 +3,7 @@
 const get_hls_master_manifest = function(parsed_dash_manifest, server_url, VOD) {
   const m3u8 = []
   m3u8.push('#EXTM3U')
+  m3u8.push('#EXT-X-VERSION:6')
 
   // child manifest: AUDIO|SUBTITLES
   {
@@ -100,35 +101,49 @@ const get_hls_child_manifest = function(playlist, dash_url, dash_qs) {
 
   const m3u8 = []
   m3u8.push('#EXTM3U')
-  m3u8.push('#EXT-X-MEDIA-SEQUENCE:0')
+  m3u8.push('#EXT-X-VERSION:6')
   m3u8.push(`#EXT-X-TARGETDURATION:${(typeof playlist.targetDuration === 'number') ? playlist.targetDuration : 10}`)
 
   if (VOD)
     m3u8.push('#EXT-X-PLAYLIST-TYPE:VOD')
 
   if (Array.isArray(playlist.segments) && playlist.segments.length) {
-    let i, segment, duration, uri
+    let i, segment, crypto, duration, byterange, uri
 
     for (i=0; i < playlist.segments.length; i++) {
       segment = playlist.segments[i]
 
-      if ((i===0) && segment.map) {
-        uri = segment.map.uri || segment.map.resolvedUri
+      if (i===0) {
+        m3u8.push(`#EXT-X-MEDIA-SEQUENCE:${segment.number || 0}`)
 
-        if (uri) {
-          uri = get_resolved_url(uri, dash_url)
+        if (segment.map) {
+          byterange = (segment.map.byterange && (typeof segment.map.byterange.length === 'number') && (typeof segment.map.byterange.offset === 'number')) ? `,BYTERANGE="${segment.map.byterange.length}@${segment.map.byterange.offset}"` : ''
+          uri       = segment.map.uri || segment.map.resolvedUri
 
-          m3u8.push(`#EXT-X-MAP:URI="${uri}"`)
+          if (uri) {
+            uri = get_resolved_url(uri, dash_url)
+
+            m3u8.push(`#EXT-X-MAP:URI="${uri}${byterange}"`)
+          }
         }
       }
 
-      duration = segment.duration
-      uri      = segment.uri || segment.resolvedUri
+      crypto    = (segment.key && segment.key.method && segment.key.uri) ? `#EXT-X-KEY:METHOD=${segment.key.method},URI="${get_resolved_url(segment.key.uri, dash_url)}"${segment.key.iv ? `,IV=${segment.key.iv}` : ''}` : ''
+      duration  = segment.duration
+      byterange = (segment.byterange && (typeof segment.byterange.length === 'number') && (typeof segment.byterange.offset === 'number')) ? `#EXT-X-BYTERANGE:${segment.byterange.length}@${segment.byterange.offset}` : ''
+      uri       = segment.uri || segment.resolvedUri
 
       if (duration && uri) {
         uri = get_resolved_url(uri, dash_url)
 
+        if (crypto)
+          m3u8.push(crypto)
+
         m3u8.push(`#EXTINF:${duration},`)
+
+        if (byterange)
+          m3u8.push(byterange)
+
         m3u8.push(uri)
       }
     }
