@@ -38,16 +38,12 @@ const fix_minimum_update_period = function(parsed_dash_manifest) {
     let group_type, group_id, group_lang, group_data, group_index, playlist
 
     for (group_type in parsed_dash_manifest.mediaGroups) {
-      if (!VOD) break
       for (group_id in parsed_dash_manifest.mediaGroups[group_type]) {
-        if (!VOD) break
         for (group_lang in parsed_dash_manifest.mediaGroups[group_type][group_id]) {
-          if (!VOD) break
           group_data = parsed_dash_manifest.mediaGroups[group_type][group_id][group_lang]
 
           if (group_data && Array.isArray(group_data.playlists) && group_data.playlists.length) {
             for (group_index=0; group_index < group_data.playlists.length; group_index++) {
-              if (!VOD) break
               playlist = group_data.playlists[group_index]
 
               get_playlist_lifespan(playlist)
@@ -65,7 +61,6 @@ const fix_minimum_update_period = function(parsed_dash_manifest) {
     let stream_index, playlist
 
     for (stream_index=0; stream_index < parsed_dash_manifest.playlists.length; stream_index++) {
-      if (!VOD) break
       playlist = parsed_dash_manifest.playlists[stream_index]
 
       get_playlist_lifespan(playlist)
