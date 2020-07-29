@@ -26,6 +26,20 @@
 
   <hr />
 
+  <div class="server-config contents">
+    <h3>Chromecast/AirPlay sender configuration:</h3>
+    <div>
+      <select id="sender_cdn">
+        <option value="">Host:</option>
+        <option value="https://warren-bank.github.io/crx-webcast-reloaded/external_website/index.html">[HTTPS] GitHub Pages</option>
+        <option value="http://webcast-reloaded.surge.sh/index.html" selected>[HTTP] Surge CDN</option>
+        <option value="http://gitcdn.link/cdn/warren-bank/crx-webcast-reloaded/gh-pages/external_website/index.html">[HTTP] GitCDN</option>
+      </select>
+    </div>
+  </div>
+
+  <hr />
+
   <div class="URL-entry-form contents">
     <h3>DASH manifest URL:</h3>
     <div class="flex">
@@ -40,7 +54,9 @@
       <label for="vod">Force VOD:</label>
       <input id="vod" type="checkbox">
     </div>
-    <button>Load Sender</button>
+    <div>
+      <button>Load Sender</button>
+    </div>
   </div>
 
   <script src="cast_video.js"></script>
