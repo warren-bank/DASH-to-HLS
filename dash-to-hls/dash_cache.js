@@ -22,7 +22,17 @@ const get_manifest = function(dash_url_base64) {
 // -----------------------------------------------------------------------------
 
 const fix_minimum_update_period = function(parsed_dash_manifest) {
-  let VOD = true
+  let VOD      = true
+  let lifespan = 0
+
+  const get_playlist_lifespan = function(playlist) {
+    if ((typeof playlist.targetDuration === 'number') && Array.isArray(playlist.segments) && playlist.segments.length) {
+      const playlist_lifespan = playlist.targetDuration * 1000 * playlist.segments.length
+
+      if ((lifespan <= 0) || (playlist_lifespan < lifespan))
+        lifespan = playlist_lifespan
+    }
+  }
 
   if (parsed_dash_manifest.mediaGroups) {
     let group_type, group_id, group_lang, group_data, group_index, playlist
@@ -40,6 +50,8 @@ const fix_minimum_update_period = function(parsed_dash_manifest) {
               if (!VOD) break
               playlist = group_data.playlists[group_index]
 
+              get_playlist_lifespan(playlist)
+
               if (!playlist.endList)
                 VOD = false
             }
@@ -56,13 +68,23 @@ const fix_minimum_update_period = function(parsed_dash_manifest) {
       if (!VOD) break
       playlist = parsed_dash_manifest.playlists[stream_index]
 
+      get_playlist_lifespan(playlist)
+
       if (!playlist.endList)
         VOD = false
     }
   }
 
-  if (VOD)
+  if (VOD) {
     delete parsed_dash_manifest.minimumUpdatePeriod
+  }
+  else {
+    const padding = 1500  // expire 1.5 seconds early so the updated manifest is available when requested by the client
+
+    lifespan = (lifespan > padding) ? (lifespan - padding) : 0
+
+    parsed_dash_manifest.minimumUpdatePeriod = lifespan
+  }
 }
 
 // -----------------------------------------------------------------------------

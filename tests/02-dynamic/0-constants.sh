@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # ------------------------------------------------------------------------------
-# http://livesim.dashif.org/
+# https://bitmovin.com/demos/low-latency-streaming
 # ------------------------------------------------------------------------------
 
-export URL='http://livesim.dashif.org/livesim/testpic_2s/Manifest.mpd'
+export URL='https://akamaibroadcasteruseast.akamaized.net/cmaf/live/657078/akasource/out.mpd'

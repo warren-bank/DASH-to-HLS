@@ -7,7 +7,7 @@ OUT_DIR="${DIR}/output"
 OUT_FILE="${OUT_DIR}/4-hls-audio.m3u8"
 [ ! -d "$OUT_DIR" ] && mkdir -p "$OUT_DIR"
 
-QS='group_type=AUDIO&group_id=audio&group_lang=en%20(main)&group_index=0'
+QS='group_type=AUDIO&group_id=audio&group_lang=main&group_index=0'
 
 SH_FILE="${DIR}/../00-common/1-download.sh"
 "$SH_FILE" "$OUT_FILE" "$URL" "$QS"
