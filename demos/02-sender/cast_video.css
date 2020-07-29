@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+  padding: 15px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.5em;
+  color: #333;
+  text-align: center;
+}
+
+body .contents {
+  margin 0 auto;
+  display: inline-block;
+}
+
+body .contents > div {
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+  margin-bottom: 1em;
+}
+
+body .contents > div.left {
+  text-align: left;
+}
+
+body .contents > div:last-child {
+  margin-bottom: 0;
+}
+
+body .contents.URL-entry-form {
+  width: 75%;
+}
+body .contents.URL-entry-form input[type="text"] {
+  flex-grow: 1;
+}
+
+.flex {
+  display: flex;
+}
+
+input, button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  display: inline-block;
+  margin: 0;
+}
+
+input[type="text"] {
+  padding: 0 0.5em;
+}

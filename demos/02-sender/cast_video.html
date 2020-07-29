@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>demo</title>
+  <link rel="icon" href="http://webcast-reloaded.surge.sh/4-clappr/img/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="cast_video.css" />
+</head>
+<body>
+
+  <div class="server-config contents">
+    <h3>DASH-to-HLS server configuration:</h3>
+    <div class="left">
+      <label for="host">Host:</label>
+      <input id="host" type="text" required="" size="15" placeholder="192.168.0.100">
+    </div>
+    <div class="left">
+      <label for="port">Port:</label>
+      <input id="port" type="text" required="" size="6" placeholder="80">
+    </div>
+    <div>
+      <label for="tls">HTTPS:</label>
+      <input id="tls" type="checkbox">
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="URL-entry-form contents">
+    <h3>DASH manifest URL:</h3>
+    <div class="flex">
+      <select id="sample_videos">
+        <option value="">sample videos:</option>
+        <option value="https://bitmovin-a.akamaihd.net/content/sintel/sintel.mpd">static</option>
+        <option value="http://livesim.dashif.org/livesim/testpic_2s/Manifest.mpd">dynamic</option>
+      </select>
+      <input type="text" id="url" value="">
+    </div>
+    <div>
+      <label for="vod">Force VOD:</label>
+      <input id="vod" type="checkbox">
+    </div>
+    <button>Load Sender</button>
+  </div>
+
+  <script src="cast_video.js"></script>
+</body>
+</html>

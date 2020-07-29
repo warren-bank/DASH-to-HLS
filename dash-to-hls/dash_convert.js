@@ -118,7 +118,7 @@ const get_hls_child_manifest = function(playlist, dash_url, dash_qs) {
 
         if (segment.map) {
           byterange = (segment.map.byterange && (typeof segment.map.byterange.length === 'number') && (typeof segment.map.byterange.offset === 'number')) ? `,BYTERANGE="${segment.map.byterange.length}@${segment.map.byterange.offset}"` : ''
-          uri       = segment.map.uri || segment.map.resolvedUri
+          uri       = segment.map.resolvedUri || segment.map.uri
 
           if (uri) {
             uri = get_resolved_url(uri, dash_url)
@@ -131,7 +131,7 @@ const get_hls_child_manifest = function(playlist, dash_url, dash_qs) {
       crypto    = (segment.key && segment.key.method && segment.key.uri) ? `#EXT-X-KEY:METHOD=${segment.key.method},URI="${get_resolved_url(segment.key.uri, dash_url)}"${segment.key.iv ? `,IV=${segment.key.iv}` : ''}` : ''
       duration  = segment.duration
       byterange = (segment.byterange && (typeof segment.byterange.length === 'number') && (typeof segment.byterange.offset === 'number')) ? `#EXT-X-BYTERANGE:${segment.byterange.length}@${segment.byterange.offset}` : ''
-      uri       = segment.uri || segment.resolvedUri
+      uri       = segment.resolvedUri || segment.uri
 
       if (duration && uri) {
         uri = get_resolved_url(uri, dash_url)
