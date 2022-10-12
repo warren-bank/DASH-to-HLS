@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@warren-bank/node-request": "^1.0.4",
-    "mpd-parser": "^0.10.1"
+    "mpd-parser": "^0.22.0"
   },
   "license": "GPL-2.0",
   "author": {
